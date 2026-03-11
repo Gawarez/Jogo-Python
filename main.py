@@ -1,51 +1,26 @@
 import pygame
+import sys
 from settings import *
-from button import Button
-from game import Game
+from game import Jogo
 
-pygame.init()
 
-screen = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption("2D Pygame Game")
+def main():
+    pygame.init()
+    tela = pygame.display.set_mode((LARGURA, ALTURA))
+    pygame.display.set_caption("Jogo 2D - Animações")
+    relogio = pygame.time.Clock()
 
-clock = pygame.time.Clock()
+    jogo = Jogo(tela)
+    rodando = True
 
-bg = pygame.image.load("player2_idle.png").convert_alpha()
-menu_bg = pygame.transform.scale(bg,(WIDTH,HEIGHT))
+    while rodando:
+        rodando = jogo.rodar()
+        pygame.display.flip()
+        relogio.tick(FPS)
 
-font = pygame.font.SysFont(None,40)
+    pygame.quit()
+    sys.exit()
 
-btn1 = Button("PLAYER 1",400,200,200,60,font)
-btn2 = Button("PLAYER 2",400,300,200,60,font)
 
-running = True
-
-while running:
-
-    clock.tick(FPS)
-
-    for event in pygame.event.get():
-
-        if event.type == pygame.QUIT:
-            running = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if btn1.clicked(event.pos):
-
-                game = Game(screen)
-                game.run()
-
-            if btn2.clicked(event.pos):
-
-                game = Game(screen)
-                game.run()
-
-    screen.blit(menu_bg,(0,0))
-
-    btn1.draw(screen)
-    btn2.draw(screen)
-
-    pygame.display.update()
-
-pygame.quit()
+if __name__ == "__main__":
+    main()

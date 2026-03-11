@@ -1,30 +1,22 @@
 import pygame
+from settings import *
 
-class Button:
 
-    def __init__(self,text,x,y,width,height,font):
+class Botao:
+    def __init__(self, x, y, largura, altura, texto, cor, cor_texto=PRETO):
+        self.rect = pygame.Rect(x, y, largura, altura)
+        self.texto = texto
+        self.cor = cor
+        self.cor_texto = cor_texto
+        self.fonte = pygame.font.Font(None, 36)
+        self.clicado = False
 
-        self.rect = pygame.Rect(x,y,width,height)
-        self.text = text
-        self.font = font
+    def desenhar(self, tela):
+        pygame.draw.rect(tela, self.cor, self.rect, border_radius=10)
+        pygame.draw.rect(tela, PRETO, self.rect, 3, border_radius=10)
+        texto_surf = self.fonte.render(self.texto, True, self.cor_texto)
+        texto_rect = texto_surf.get_rect(center=self.rect.center)
+        tela.blit(texto_surf, texto_rect)
 
-        self.color = (200,200,200)
-        self.text_color = (0,0,0)
-
-    def draw(self,screen):
-
-        pygame.draw.rect(screen,self.color,self.rect)
-
-        text_surface = self.font.render(self.text,True,self.text_color)
-
-        screen.blit(
-            text_surface,
-            (
-                self.rect.centerx - text_surface.get_width()//2,
-                self.rect.centery - text_surface.get_height()//2
-            )
-        )
-
-    def clicked(self,pos):
-
+    def foi_clicado(self, pos):
         return self.rect.collidepoint(pos)
